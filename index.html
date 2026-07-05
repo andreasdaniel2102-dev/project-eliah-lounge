@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECT ELIAH LOUNGE | Cockpit</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="project-tag">GEBURTSTAGSPROJEKT • CODE: E-LOUNGE-2026</span>
+                <h1>GEBURTSTAGSPROJEKT: PROJECT ELIAH LOUNGE</h1>
+                <p class="subtitle">Das offizielle interaktive Planungs- und Freigabe-Cockpit zum Geburtstag von Eliah.</p>
+            </div>
+            <div class="status-panel">
+                <div class="status-label">Projekt-Freigabestatus</div>
+                <div id="project-status-badge" class="badge badge-planning">
+                    <span class="pulse-dot"></span> In Planung
+                </div>
+            </div>
+        </header>
+
+        <!-- DASHBOARD GRID -->
+        <main class="dashboard-grid">
+
+            <!-- SECTION: INTERACTIVE LOUNGE DESIGN STUDIO -->
+            <section class="card card-visual span-3">
+                <div class="card-header">
+                    <h2>Interactive Lounge Design-Studio</h2>
+                    <p class="card-subtitle">Plane das Design: Wandfarben, LED-Lichtkonzept und Vorher-Nachher-Vergleich.</p>
+                </div>
+                
+                <div class="studio-layout">
+                    <!-- Left: Before/After Slider & Dynamic Visuals -->
+                    <div class="studio-visuals">
+                        <div class="image-slider-container" id="slider-container">
+                            <!-- Background: Before (Empty Room) -->
+                            <img src="assets/room/room_empty_1.jpeg" alt="Ist-Zustand Leer" class="slider-img img-before">
+                            
+                            <!-- Foreground: Soll-State (Rendering) -->
+                            <div class="img-after-container" id="after-container">
+                                <img src="assets/renders/lounge_render_variant_a.png" alt="Soll-Zustand Konzept" class="slider-img img-after img-day" id="img-after-day">
+                                <img src="assets/renders/lounge_render_variant_a_night.png" alt="Soll-Zustand Nachtkonzept" class="slider-img img-after img-night" id="img-after-night">
+                                <!-- Dynamic Wall Paint Overlay -->
+                                <div class="overlay-wall-paint" id="wall-paint-overlay"></div>
+                                <!-- LED Color Blend Layer -->
+                                <div class="overlay-led-color" id="led-color-overlay"></div>
+                            </div>
+                            
+                            <!-- Comparison Slider Bar -->
+                            <div class="slider-handle" id="slider-handle">
+                                <div class="handle-button">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                        <path d="M8 7l-5 5 5 5M16 7l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="visuals-legend">
+                            <span>← Ist-Zustand (Zimmer leer)</span>
+                            <span>Soll-Konzept (Renoviert) →</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Interactive Control Panel -->
+                    <div class="studio-controls">
+                        <!-- Control 1: Wall Paint Sim -->
+                        <div class="control-section">
+                            <h3>1. Wandfarbe simulieren</h3>
+                            <p class="control-desc">Färbe die Wände des Zimmers virtuell ein:</p>
+                            <div class="paint-selectors">
+                                <button type="button" class="paint-btn active" data-color="none" title="Original (Weiß)">
+                                    <span class="color-dot color-original"></span> Original
+                                </button>
+                                <button type="button" class="paint-btn" data-color="slate" title="Schiefergrau">
+                                    <span class="color-dot color-slate"></span> Schiefer
+                                </button>
+                                <button type="button" class="paint-btn" data-color="navy" title="Navy-Blau">
+                                    <span class="color-dot color-navy"></span> Navy
+                                </button>
+                                <button type="button" class="paint-btn" data-color="sage" title="Salbeigrün">
+                                    <span class="color-dot color-sage"></span> Salbei
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Control 2: LED Lichtkonzept (Smart Console) -->
+                        <div class="control-section">
+                            <h3>2. Smart LED-Lichtsteuerung</h3>
+                            <p class="control-desc">Passe die Lichtfarbe und Helligkeit im Raum stufenlos an:</p>
+                            <div class="led-controls">
+                                <label class="switch-container">
+                                    <input type="checkbox" id="led-toggle">
+                                    <span class="switch-slider"></span>
+                                    <span class="switch-label">Smart LED einschalten</span>
+                                </label>
+                                
+                                <div class="smart-led-panel disabled" id="smart-led-panel">
+                                    <!-- Hue Color Slider -->
+                                    <div class="slider-group">
+                                        <div class="slider-label-row">
+                                            <span>Lichtfarbe (Farbton)</span>
+                                            <span id="led-color-value" class="color-text-glowing">Cyan</span>
+                                        </div>
+                                        <input type="range" id="led-hue-slider" min="0" max="360" value="180" class="hue-range-slider">
+                                    </div>
+                                    
+                                    <!-- Brightness Slider -->
+                                    <div class="slider-group">
+                                        <div class="slider-label-row">
+                                            <span>Dimmer (Helligkeit)</span>
+                                            <span id="led-brightness-value">80%</span>
+                                        </div>
+                                        <input type="range" id="led-brightness-slider" min="10" max="100" value="80" class="brightness-range-slider">
+                                    </div>
+
+                                    <!-- Light Scenes -->
+                                    <div class="scene-label">Stimmungsszenen</div>
+                                    <div class="scene-selectors">
+                                        <button type="button" class="scene-btn" data-scene="movie">🎬 Kino</button>
+                                        <button type="button" class="scene-btn" data-scene="gaming">🎮 Gaming</button>
+                                        <button type="button" class="scene-btn" data-scene="chill">🛋️ Chill</button>
+                                        <button type="button" class="scene-btn" id="btn-scene-loop">🌈 Rainbow</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Control 3: Couch-Stellvariante -->
+                        <div class="control-section">
+                            <h3>3. Couch-Stellvariante</h3>
+                            <p class="control-desc">Wähle die Positionierung von Couch und TV:</p>
+                            <div class="layout-selectors">
+                                <button type="button" class="layout-btn active" data-layout="a" title="Variante A (TV am Fenster)">
+                                    Variante A (TV am Fenster)
+                                </button>
+                                <button type="button" class="layout-btn" data-layout="b" title="Variante B (Couch am Fenster)">
+                                    Variante B (Couch am Fenster)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Control 4: Originalfotos & Materialien -->
+                        <div class="control-section">
+                            <h3>4. Originalfotos & Materialien</h3>
+                            <p class="control-desc">Wähle ein Foto zum Inspizieren aus:</p>
+                            <div class="thumbnail-gallery">
+                                <button type="button" class="thumb-btn active" data-img="assets/renders/lounge_render_variant_a.png" data-type="render" title="Konzept Rendering">
+                                    <img src="assets/renders/lounge_render_variant_a.png" alt="Render">
+                                    <span>Soll-Render</span>
+                                </button>
+                                <button type="button" class="thumb-btn" data-img="assets/room/room_empty_1.jpeg" data-type="room" title="Zimmer leer">
+                                    <img src="assets/room/room_empty_1.jpeg" alt="Zimmer">
+                                    <span>Raum Leer</span>
+                                </button>
+                                <button type="button" class="thumb-btn" data-img="assets/room/room_window.jpeg" data-type="room" title="Zimmer Fensterseite">
+                                    <img src="assets/room/room_window.jpeg" alt="Fenster">
+                                    <span>Fenster</span>
+                                </button>
+                                <button type="button" class="thumb-btn" data-img="assets/room/room_door.jpeg" data-type="room" title="Zimmer Türseite">
+                                    <img src="assets/room/room_door.jpeg" alt="Tür">
+                                    <span>Tür</span>
+                                </button>
+                                <button type="button" class="thumb-btn" data-img="assets/couch/couch_front.jpeg" data-type="couch" title="Sponsor Couch Front">
+                                    <img src="assets/couch/couch_front.jpeg" alt="Couch Front">
+                                    <span>Couch Front</span>
+                                </button>
+                                <button type="button" class="thumb-btn" data-img="assets/couch/couch_livingroom.jpeg" data-type="couch" title="Sponsor Couch im Wohnzimmer">
+                                    <img src="assets/couch/couch_livingroom.jpeg" alt="Couch Wohnzimmer">
+                                    <span>Couch Ist</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- SECTION 1: ROLES & INVESTMENT CASE -->
+            <section class="card card-hero span-2">
+                <div class="card-header">
+                    <h2>Das Investitionspaket des Sponsors</h2>
+                    <p class="card-subtitle">Fest vereinbarte Leistungen für das Projekt</p>
+                </div>
+                <div class="investment-grid">
+                    <div class="invest-item">
+                        <div class="invest-icon">
+                            <!-- SVG Couch -->
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 18v2m16-2v2M2 10v4a2 2 0 002 2h16a2 2 0 002-2v-4m-2-4v4H4V6a2 2 0 012-2h12a2 2 0 012 2v0z" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="invest-meta">
+                            <h4>Wohnzimmer-Couch</h4>
+                            <p>Vollwertige Couch zur Raum-Integration</p>
+                        </div>
+                    </div>
+                    <div class="invest-item">
+                        <div class="invest-icon highlight">
+                            <!-- SVG Money -->
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="6" width="20" height="12" rx="2"/>
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M6 12h.01M18 12h.01" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="invest-meta">
+                            <h4>500 € Projektzuschuss</h4>
+                            <p>Finanzieller Sponsor-Beitrag zur freien Verfügung</p>
+                        </div>
+                    </div>
+                    <div class="invest-item">
+                        <div class="invest-icon">
+                            <!-- SVG Clock/Work -->
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2M16 21H8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="invest-meta">
+                            <h4>4 Stunden Arbeitszeit</h4>
+                            <p>Persönliche Mithilfe des Sponsors vor Ort</p>
+                        </div>
+                    </div>
+                    <div class="invest-item">
+                        <div class="invest-icon">
+                            <!-- SVG Support -->
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="invest-meta">
+                            <h4>Planung & Aufbau</h4>
+                            <p>Unterstützung bei Vermessung und Montage</p>
+                        </div>
+                    </div>
+                    <div class="invest-item">
+                        <div class="invest-icon">
+                            <!-- SVG Room -->
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3m10-11v11a1 1 0 01-1 1h-3m-4 0V11a1 1 0 00-1-1H9a1 1 0 00-1 1v10h4" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="invest-meta">
+                            <h4>Zimmer als Projektbasis</h4>
+                            <p>Bereitstellung des Raumes für den Umbau</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PARTIES CARD -->
+            <section class="card card-parties">
+                <div class="card-header">
+                    <h2>Projektparteien</h2>
+                    <p class="card-subtitle">Zuständigkeiten & Rollen</p>
+                </div>
+                <div class="parties-list">
+                    <div class="party-member">
+                        <div class="avatar pm-avatar">PL</div>
+                        <div class="party-info">
+                            <h3>Eliah</h3>
+                            <span class="role-badge leader">Projektleiter (PL)</span>
+                            <p>Verantwortlich für Design, Raumaufteilung & Budget-Allokation.</p>
+                        </div>
+                    </div>
+                    <div class="party-member">
+                        <div class="avatar sponsor-avatar">SP</div>
+                        <div class="party-info">
+                            <h3>Papa</h3>
+                            <span class="role-badge investor">Investor & Sponsor (SP)</span>
+                            <p>Verantwortlich für Bereitstellung der Ressourcen & handwerklichen Support.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: INTERACTIVE BUDGET CALCULATOR -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Budget-Simulator</h2>
+                    <p class="card-subtitle">Gesamtbudget: <strong id="total-budget-label">500,00 €</strong></p>
+                </div>
+                <div class="budget-content">
+                    <!-- Budgets Configuration -->
+                    <div class="budget-config-grid">
+                        <div class="input-group">
+                            <label for="sponsor-budget">Sponsor-Zuschuss (€)</label>
+                            <input type="number" id="sponsor-budget" value="500" class="budget-input config-input" readonly disabled>
+                        </div>
+                        <div class="input-group">
+                            <label for="own-budget">Eliahs Eigenbudget (€)</label>
+                            <input type="number" id="own-budget" value="150" min="0" step="10" class="budget-input config-input">
+                        </div>
+                    </div>
+
+                    <div class="budget-progress-container">
+                        <div class="budget-stats">
+                            <span class="stat-item">Verplant: <strong id="budget-spent">0,00 €</strong></span>
+                            <span class="stat-item">Verfügbar: <strong id="budget-left" class="text-green">0,00 €</strong></span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div id="budget-progress-bar" class="progress-bar-fill green-gradient" style="width: 0%"></div>
+                        </div>
+                        <div id="budget-alert" class="alert-box hide">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="alert-icon">
+                                <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Achtung: Budgetüberschreitung!</span>
+                        </div>
+                    </div>
+
+                    <form id="budget-form" class="budget-form">
+                        <div class="input-group">
+                            <label for="cost-paint">Farbe & Malerzubehör (€)</label>
+                            <input type="number" id="cost-paint" min="0" step="1" value="80" class="budget-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="cost-floor">Parkettschleifmaschine & Öl (€)</label>
+                            <input type="number" id="cost-floor" min="0" step="1" value="150" class="budget-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="cost-light">Indirekte LED-Beleuchtung (€)</label>
+                            <input type="number" id="cost-light" min="0" step="1" value="70" class="budget-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="cost-drinks">Optionen (z.B. Getränkekühlschrank) (€)</label>
+                            <input type="number" id="cost-drinks" min="0" step="1" value="100" class="budget-input">
+                        </div>
+                        
+                        <!-- Dynamic items list -->
+                        <div class="dynamic-costs-header">Eigene Posten</div>
+                        <div id="dynamic-costs-list" class="dynamic-costs-list">
+                            <!-- JS will inject dynamic rows here -->
+                        </div>
+                        
+                        <button type="button" id="btn-add-cost" class="btn btn-secondary btn-small">+ Posten hinzufügen</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- SECTION 3: INTERACTIVE CHECKLIST & TASK ASSIGNMENT -->
+            <section class="card span-2">
+                <div class="card-header flex-header">
+                    <div>
+                        <h2>Projektinhalt & Aufgabenplaner</h2>
+                        <p class="card-subtitle">Verwalte hier die anstehenden Projektschritte</p>
+                    </div>
+                    <div class="checklist-progress">
+                        Fortschritt: <strong id="tasks-percent">0%</strong>
+                        <div class="progress-bar-bg small">
+                            <div id="tasks-progress-bar" class="progress-bar-fill blue-gradient" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tasks-table-container">
+                    <table class="tasks-table">
+                        <thead>
+                            <tr>
+                                <th class="col-check">Status</th>
+                                <th class="col-task">Aktivität</th>
+                                <th class="col-who">Zuständig</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasks-body">
+                            <!-- Tasks will be dynamically populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 4: DIGITAL SIGN-OFF / CONTRACT -->
+            <section class="card span-3 sign-off-card">
+                <div class="card-header text-center">
+                    <h2>Digitale Projektfreigabe</h2>
+                    <p class="card-subtitle">Das Projekt wird offiziell gestartet, sobald beide Vertragspartner freigeben.</p>
+                </div>
+
+                <div class="signatures-container">
+                    <!-- Eliah Sign Card -->
+                    <div id="sign-card-eliah" class="sign-card">
+                        <div class="sign-icon">PL</div>
+                        <h3>Freigabe Projektleiter</h3>
+                        <p class="sign-name">Eliah</p>
+                        <div id="sign-status-eliah" class="sign-status-text">Ausstehend</div>
+                        <button type="button" id="btn-sign-eliah" class="btn btn-primary">Projekt freigeben</button>
+                    </div>
+
+                    <!-- Papa Sign Card -->
+                    <div id="sign-card-papa" class="sign-card">
+                        <div class="sign-icon">SP</div>
+                        <h3>Freigabe Sponsor & Investor</h3>
+                        <p class="sign-name">Papa</p>
+                        <div id="sign-status-papa" class="sign-status-text">Ausstehend</div>
+                        <button type="button" id="btn-sign-papa" class="btn btn-secondary">Finanzierung freigeben</button>
+                    </div>
+                </div>
+
+                <div id="seal-container" class="seal-container hide">
+                    <div class="seal">
+                        <svg viewBox="0 0 100 100" class="seal-svg">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2"/>
+                            <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                            <text x="50" y="42" text-anchor="middle" font-size="8" font-weight="bold" fill="currentColor">PROJECT</text>
+                            <text x="50" y="54" text-anchor="middle" font-size="10" font-weight="black" fill="currentColor" letter-spacing="1">ELIAH</text>
+                            <text x="50" y="66" text-anchor="middle" font-size="8" font-weight="bold" fill="currentColor">LOUNGE</text>
+                            <path d="M30 75 L50 95 L70 75" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="seal-text">
+                        <h3>Projekt offiziell freigegeben</h3>
+                        <p id="release-date">Freigegeben am: --.--.---- --:-- Uhr</p>
+                        <button id="btn-reset" class="btn btn-text">Projekt-Reset (Entwurf)</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>PROJECT ELIAH LOUNGE &copy; 2026. Entwickelt als interaktives Cockpit für GitHub Pages.</p>
+            <p class="footer-links">
+                <a href="docs/project-spec.md" target="_blank">Projektspezifikation lesen</a> &bull; 
+                <a href="ROADMAP.md" target="_blank">Roadmap ansehen</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Script -->
+    <script src="app.js"></script>
+</body>
+</html>

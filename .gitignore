@@ -1,0 +1,14 @@
+# System- & Tool-Caches
+.gemini/
+.agents/
+.system_generated/
+.tempmediaStorage/
+brain/
+scratch/
+
+# Archives & Temp Files
+*.zip
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
