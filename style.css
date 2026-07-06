@@ -1031,6 +1031,8 @@ body {
     letter-spacing: 0.5px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 8px;
+    position: relative;
+    z-index: 11; /* Keep title visible above the lock overlay */
 }
 
 .control-card .control-desc {
