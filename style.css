@@ -1128,7 +1128,7 @@ body {
     opacity: 0;
     transition: var(--transition-smooth);
     mix-blend-mode: multiply;
-    clip-path: polygon(0% 0%, 68.2% 17.5%, 68.2% 84.8%, 0% 100%);
+    clip-path: polygon(68.2% 17.5%, 76.8% 19.5%, 76.8% 85%, 68.2% 84.8%);
 }
 
 /* GIFT BANNER */
