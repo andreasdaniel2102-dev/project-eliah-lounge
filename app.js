@@ -510,6 +510,7 @@ function initDesignStudio() {
         smartLedPanel.classList.add('disabled');
         disableSmartLED();
     }
+    checkFeatureLocks();
 }
 
 // DESIGN STUDIO FUNCTIONS
@@ -769,6 +770,7 @@ function renderTasks() {
     
     tasksPercentEl.textContent = `${progressPercent}%`;
     tasksProgressBar.style.width = `${progressPercent}%`;
+    checkFeatureLocks();
 }
 
 // SIGNATURES WORKFLOW
@@ -943,6 +945,47 @@ const confetti = {
         this.animationId = requestAnimationFrame(() => this.run());
     }
 };
+
+function checkFeatureLocks() {
+    const task1 = state.tasks.find(t => t.id === 1);
+    const task2 = state.tasks.find(t => t.id === 2);
+    
+    const task1Checked = task1 ? task1.checked : false;
+    const task2Checked = task2 ? task2.checked : false;
+    
+    const isUnlocked = task1Checked && task2Checked;
+    
+    const lockPaint = document.getElementById('lock-paint');
+    const lockLED = document.getElementById('lock-led');
+    
+    if (isUnlocked) {
+        if (lockPaint) lockPaint.classList.add('hide');
+        if (lockLED) lockLED.classList.add('hide');
+    } else {
+        if (lockPaint) lockPaint.classList.remove('hide');
+        if (lockLED) lockLED.classList.remove('hide');
+        
+        // Auto-disable active designs if it gets locked
+        if (state.design.ledOn) {
+            state.design.ledOn = false;
+            const ledToggle = document.getElementById('led-toggle');
+            if (ledToggle) ledToggle.checked = false;
+            disableSmartLED();
+            const smartLedPanel = document.getElementById('smart-led-panel');
+            if (smartLedPanel) smartLedPanel.classList.add('disabled');
+            saveState();
+        }
+        if (state.design.wallPaint !== 'none') {
+            state.design.wallPaint = 'none';
+            applyWallPaint('none');
+            paintBtns.forEach(btn => {
+                if (btn.dataset.color === 'none') btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            saveState();
+        }
+    }
+}
 
 // RUN APP ON PAGE LOAD
 window.addEventListener('DOMContentLoaded', () => {

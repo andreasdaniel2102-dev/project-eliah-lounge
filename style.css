@@ -1019,6 +1019,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: relative; /* Enabled for lock overlay positioning */
 }
 
 .control-card h3 {
@@ -1037,6 +1038,70 @@ body {
     color: var(--text-secondary);
     margin: 0;
     line-height: 1.4;
+}
+
+/* CARD LOCK OVERLAY (Gamification Lock) */
+.card-lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 15, 30, 0.95);
+    backdrop-filter: blur(5px);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    border-radius: var(--border-radius-md);
+}
+
+.card-lock-overlay.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.lock-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.lock-icon {
+    font-size: 2rem;
+    animation: lockPulse 2s infinite ease-in-out;
+}
+
+@keyframes lockPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.lock-content h4 {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--accent-amber);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+}
+
+.lock-content p {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.lock-content p strong {
+    color: var(--text-primary);
 }
 
 .image-slider-container {
