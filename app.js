@@ -437,6 +437,30 @@ function setupEventListeners() {
             }, 60);
         }
     });
+
+    // --- GIFT BANNER ACCORDION EVENT ---
+    const giftHeader = document.getElementById('gift-header');
+    const giftBody = document.getElementById('gift-body');
+    const giftBanner = document.getElementById('gift-banner');
+    const giftArrow = document.getElementById('gift-arrow');
+    
+    if (giftHeader && giftBody && giftBanner && giftArrow) {
+        giftHeader.addEventListener('click', () => {
+            const isHidden = giftBody.classList.contains('hide');
+            if (isHidden) {
+                giftBody.classList.remove('hide');
+                giftBanner.classList.add('opened');
+                giftArrow.textContent = '▲';
+                // Trigger minor confetti blast
+                confetti.start();
+                setTimeout(() => confetti.stop(), 2500);
+            } else {
+                giftBody.classList.add('hide');
+                giftBanner.classList.remove('opened');
+                giftArrow.textContent = '▼';
+            }
+        });
+    }
 }
 
 // INITIALIZE DESIGN STUDIO STATE UI

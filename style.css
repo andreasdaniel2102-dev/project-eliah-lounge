@@ -1128,6 +1128,148 @@ body {
     opacity: 0;
     transition: var(--transition-smooth);
     mix-blend-mode: multiply;
+    clip-path: polygon(0% 0%, 68.2% 17.5%, 68.2% 84.8%, 0% 100%);
+}
+
+/* GIFT BANNER */
+.gift-banner {
+    background-color: var(--bg-card);
+    border: 2px dashed var(--accent-amber);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-subtle);
+}
+
+.gift-banner.opened {
+    border-style: solid;
+    border-color: var(--accent-indigo);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.15);
+}
+
+.gift-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+    gap: 16px;
+    user-select: none;
+}
+
+.gift-header:hover {
+    background-color: hsla(35, 92%, 50%, 0.05);
+}
+
+.gift-banner.opened .gift-header:hover {
+    background-color: hsla(250, 84%, 54%, 0.05);
+}
+
+.gift-icon-box {
+    font-size: 2.2rem;
+    animation: wobble 2.5s infinite ease-in-out;
+}
+
+@keyframes wobble {
+    0%, 100% { transform: rotate(0deg); }
+    15% { transform: rotate(-10deg) scale(1.1); }
+    30% { transform: rotate(10deg) scale(1.1); }
+    45% { transform: rotate(-5deg) scale(1.1); }
+    60% { transform: rotate(5deg) scale(1.1); }
+    75% { transform: rotate(0deg); }
+}
+
+.gift-title-group {
+    flex: 1;
+}
+
+.gift-title-group h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.gift-title-group p {
+    margin: 2px 0 0 0;
+    font-size: 0.78rem;
+    color: var(--accent-amber);
+    font-weight: 600;
+}
+
+.gift-banner.opened .gift-title-group p {
+    color: var(--text-success);
+}
+
+.gift-arrow {
+    font-size: 1rem;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+}
+
+.gift-body {
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid var(--border-color);
+    background-color: hsla(222, 47%, 4%, 0.15);
+    animation: fadeInGift 0.4s ease-out;
+}
+
+@keyframes fadeInGift {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.gift-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+@media (min-width: 640px) {
+    .gift-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.gift-card-item {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition-smooth);
+}
+
+.gift-card-item:hover {
+    border-color: var(--accent-indigo);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.1);
+}
+
+.gift-card-icon {
+    font-size: 2rem;
+}
+
+.gift-card-item h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.gift-card-item p {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+}
+
+.gift-body.hide {
+    display: none;
 }
 
 /* Wall Paint Color Classes */
