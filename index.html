@@ -15,6 +15,18 @@
     <canvas id="confetti-canvas"></canvas>
 
     <div class="container">
+        <!-- BIRTHDAY BANNER -->
+        <div class="birthday-banner">
+            <div class="birthday-content">
+                <span class="birthday-emoji">🎉</span>
+                <div class="birthday-text-group">
+                    <h2>Happy Birthday, lieber Eliah!</h2>
+                    <p>Alles Liebe zum Geburtstag! Hier ist dein offizielles Planungs-Cockpit für deine neue Lounge. Lass uns das Projekt starten! 🚀</p>
+                </div>
+                <span class="birthday-emoji">🎂</span>
+            </div>
+        </div>
+
         <!-- HEADER -->
         <header class="app-header">
             <div class="logo-area">
@@ -40,9 +52,9 @@
                     <p class="card-subtitle">Plane das Design: Wandfarben, LED-Lichtkonzept und Vorher-Nachher-Vergleich.</p>
                 </div>
                 
-                <div class="studio-layout">
-                    <!-- Left: Before/After Slider & Dynamic Visuals -->
-                    <div class="studio-visuals">
+                <div class="studio-layout-v2">
+                    <!-- Top: Full Width Before/After Slider -->
+                    <div class="studio-visuals-full">
                         <div class="image-slider-container" id="slider-container">
                             <!-- Background: Before (Empty Room) -->
                             <img src="assets/room/room_empty_1.jpeg" alt="Ist-Zustand Leer" class="slider-img img-before">
@@ -71,33 +83,25 @@
                             <span>Soll-Konzept (Renoviert) →</span>
                         </div>
                     </div>
-
-                    <!-- Right: Interactive Control Panel -->
-                    <div class="studio-controls">
-                        <!-- Control 1: Wall Paint Sim -->
-                        <div class="control-section">
+                    
+                    <!-- Bottom: 4 Column Grid for Controls -->
+                    <div class="studio-controls-grid">
+                        <!-- Card 1: Wall Paint -->
+                        <div class="control-card">
                             <h3>1. Wandfarbe simulieren</h3>
                             <p class="control-desc">Färbe die Wände des Zimmers virtuell ein:</p>
                             <div class="paint-selectors">
-                                <button type="button" class="paint-btn active" data-color="none" title="Original (Weiß)">
-                                    <span class="color-dot color-original"></span> Original
-                                </button>
-                                <button type="button" class="paint-btn" data-color="slate" title="Schiefergrau">
-                                    <span class="color-dot color-slate"></span> Schiefer
-                                </button>
-                                <button type="button" class="paint-btn" data-color="navy" title="Navy-Blau">
-                                    <span class="color-dot color-navy"></span> Navy
-                                </button>
-                                <button type="button" class="paint-btn" data-color="sage" title="Salbeigrün">
-                                    <span class="color-dot color-sage"></span> Salbei
-                                </button>
+                                <button type="button" class="paint-btn active" data-color="none" title="Original (Weiß)">Original</button>
+                                <button type="button" class="paint-btn" data-color="slate" title="Schiefergrau">Schiefer</button>
+                                <button type="button" class="paint-btn" data-color="navy" title="Navy-Blau">Navy</button>
+                                <button type="button" class="paint-btn" data-color="sage" title="Salbeigrün">Salbei</button>
                             </div>
                         </div>
-
-                        <!-- Control 2: LED Lichtkonzept (Smart Console) -->
-                        <div class="control-section">
+                        
+                        <!-- Card 2: Smart LED -->
+                        <div class="control-card">
                             <h3>2. Smart LED-Lichtsteuerung</h3>
-                            <p class="control-desc">Passe die Lichtfarbe und Helligkeit im Raum stufenlos an:</p>
+                            <p class="control-desc">Passe die Lichtfarbe und Helligkeit stufenlos an:</p>
                             <div class="led-controls">
                                 <label class="switch-container">
                                     <input type="checkbox" id="led-toggle">
@@ -109,7 +113,7 @@
                                     <!-- Hue Color Slider -->
                                     <div class="slider-group">
                                         <div class="slider-label-row">
-                                            <span>Lichtfarbe (Farbton)</span>
+                                            <span>Farbton</span>
                                             <span id="led-color-value" class="color-text-glowing">Cyan</span>
                                         </div>
                                         <input type="range" id="led-hue-slider" min="0" max="360" value="180" class="hue-range-slider">
@@ -118,41 +122,42 @@
                                     <!-- Brightness Slider -->
                                     <div class="slider-group">
                                         <div class="slider-label-row">
-                                            <span>Dimmer (Helligkeit)</span>
+                                            <span>Dimmer</span>
                                             <span id="led-brightness-value">80%</span>
                                         </div>
                                         <input type="range" id="led-brightness-slider" min="10" max="100" value="80" class="brightness-range-slider">
                                     </div>
 
                                     <!-- Light Scenes -->
-                                    <div class="scene-label">Stimmungsszenen</div>
                                     <div class="scene-selectors">
                                         <button type="button" class="scene-btn" data-scene="movie">🎬 Kino</button>
-                                        <button type="button" class="scene-btn" data-scene="gaming">🎮 Gaming</button>
+                                        <button type="button" class="scene-btn" data-scene="gaming">🎮 Game</button>
                                         <button type="button" class="scene-btn" data-scene="chill">🛋️ Chill</button>
-                                        <button type="button" class="scene-btn" id="btn-scene-loop">🌈 Rainbow</button>
+                                        <button type="button" class="scene-btn" id="btn-scene-loop">🌈 Rainb.</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Control 3: Couch-Stellvariante -->
-                        <div class="control-section">
+                        
+                        <!-- Card 3: Couch Variant -->
+                        <div class="control-card">
                             <h3>3. Couch-Stellvariante</h3>
                             <p class="control-desc">Wähle die Positionierung von Couch und TV:</p>
                             <div class="layout-selectors">
-                                <button type="button" class="layout-btn active" data-layout="a" title="Variante A (TV am Fenster)">
-                                    Variante A (TV am Fenster)
+                                <button type="button" class="layout-btn active" data-layout="a">
+                                    <strong>Variante A (Beste)</strong>
+                                    <span>TV links, Couch an linker Wand</span>
                                 </button>
-                                <button type="button" class="layout-btn" data-layout="b" title="Variante B (Couch am Fenster)">
-                                    Variante B (Couch am Fenster)
+                                <button type="button" class="layout-btn" data-layout="b">
+                                    <strong>Variante B</strong>
+                                    <span>Couch am Fenster, TV links</span>
                                 </button>
                             </div>
                         </div>
-
-                        <!-- Control 4: Originalfotos & Materialien -->
-                        <div class="control-section">
-                            <h3>4. Originalfotos & Materialien</h3>
+                        
+                        <!-- Card 4: Originalfotos & Materialien -->
+                        <div class="control-card">
+                            <h3>4. Original- & Referenzfotos</h3>
                             <p class="control-desc">Wähle ein Foto zum Inspizieren aus:</p>
                             <div class="thumbnail-gallery">
                                 <button type="button" class="thumb-btn active" data-img="assets/renders/lounge_render_variant_a.png" data-type="render" title="Konzept Rendering">
